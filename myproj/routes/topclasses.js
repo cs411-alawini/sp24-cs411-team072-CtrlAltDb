@@ -40,7 +40,7 @@ router.get('/', function(req, res, next) {
   const min_gpa = req.query.GPAFloor;
   const min_rating = req.query.CourseRatingFloor;
   const credit_hours = req.query.CreditHours;
-  const intersect_union = req.query.IntersectOrUnion;
+  const intersect_union = req.query.IntersectOrUnion === "on" ? 1 : 0;
 
 
   // Validate that the CRN is a numeric value
@@ -49,7 +49,7 @@ router.get('/', function(req, res, next) {
   // }
 
   // Construct the query
- const query = 'SELECT * FROM UserCustomQuery(?,?,?,?,?)';
+ const query = 'CALL UserCustomQuery(?,?,?,?,?)';
  //Alawini, Abdussalam A
  //CRN = ? and CourseName LIKE ? and 
   const queryParams = [
@@ -64,7 +64,7 @@ router.get('/', function(req, res, next) {
     }
     // Send the results back to the client
     if (results.length > 0) {
-      res.render('list_topclasses',{page_title:"Top Classes",data:results});
+      res.render('list_topclasses',{page_title:"Top Classes",data:results[0]});
       //res.json(results);
     } else {
       // If no results found, send an appropriate response
