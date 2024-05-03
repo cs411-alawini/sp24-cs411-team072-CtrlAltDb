@@ -37,7 +37,11 @@ router.post('/submitReview', function(req, res) {
 });
 
 router.delete('/deleteReview', function(req, res) {
-  const { email, crn, year, semester} = req.body;
+  //const { email, crn, year, semester} = req.body;
+  const email = req.query.email;
+  const crn = req.query.crn;
+  const year = req.query.year;
+  const semester = req.query.semester;
 
   // SQL Query to insert data
   const delete_sql = `
@@ -52,14 +56,14 @@ router.delete('/deleteReview', function(req, res) {
         // Handle any database errors
         console.error('Failed to delete data:', err);
         res.status(500).json({
-            message: "Failed to delete review",
+            message: "Failed to delete review test 1",
             error: err.message
         });
         return next(err);
       }
       res.json({
           message: "Review deleted successfully",
-          data: req.body
+          data: req.query
       });
     });
 });
@@ -69,21 +73,22 @@ router.post('/updateReview', function(req, res) {
 
   // SQL Query to insert data
   const sql = `
-    UPDATE UserFeedback WHERE Email = ? AND CRN = ? AND Year = ? AND Semester = ?
+    UPDATE UserFeedback SET Testimony = ?, Rating = ?, Difficulty = ?, TimeCommit = ?, Time_stamp = CURRENT_TIMESTAMP
+    WHERE Email = ? AND CRN = ? AND Year = ? AND Semester = ?
   `;
 
-    connection.query(sql, [email, year, crn, semester], function(err, results, fields){
+    connection.query(sql, [testimony, rating, difficulty, timeCommit, email, crn, year, semester], function(err, results, fields){
       if (err) {
         // Handle any database errors
-        console.error('Failed to delete data:', err);
+        console.error('Failed to update data:', err);
         res.status(500).json({
-            message: "Failed to delete review",
+            message: "Failed to update review",
             error: err.message
         });
         return next(err);
       }
       res.json({
-          message: "Review deleted successfully",
+          message: "Review updated successfully",
           data: req.body
       });
     });
