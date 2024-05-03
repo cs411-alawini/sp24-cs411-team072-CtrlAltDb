@@ -144,6 +144,7 @@
                 <input type="number" id="timeCommit" name="timeCommit" min="1" max="40" step="0.1" placeholder="Time spent per week" required>
             </div>
             <button type="submit">Submit Review</button>
+            
         </form>
         <!-- Response Output Area -->
         <div class="response-output" id="responseOutput"></div>
@@ -152,6 +153,7 @@
         <p>&copy; 2024 Course Investigator. All rights reserved.</p>
     </footer>
     <script>
+        
         document.getElementById('reviewForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const formData = {
@@ -194,6 +196,22 @@
                 deleteButton.textContent = 'Delete';
                 deleteButton.onclick = function() {
                     // Implement delete functionality
+                    fetch('/deleteReview', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email: reviewData.email, crn: reviewData.crn, year: reviewData.year, semester: reviewData.semester })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Review deleted', data);
+                        outputDiv.innerHTML = 'Review deleted successfully.';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.getElementById('responseOutput').innerHTML = 'Failed to delete review.';
+                    });
                     outputDiv.innerHTML = ''; // Clear the display after deletion
                 };
 
