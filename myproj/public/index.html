@@ -60,14 +60,36 @@
         .intro p {
             font-size: 1.2em;
             line-height: 1.6;
-            max-width: 600px;
+            max-width: 1000px;
             margin: auto;
         }
         .search {
-            max-width: 600px;
+            max-width: 1000px;
             margin: auto;
             text-align: center;
             padding-bottom: 2em;
+        }
+        .results {
+            max-width: 1000px;
+            margin: auto;
+            padding-bottom: 2em;
+        }
+
+        .results table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+        }
+
+        .results th, .results td {
+            padding: 0.5em;
+            border: 1px solid #ccc;
+        }
+
+        .results th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: left;
         }
         #course-search-form input[type="text"],
         #course-search-form button {
@@ -128,7 +150,7 @@
         <nav>
             <ul>
                 <li><a href="#" class="active">Home</a></li>
-                <li><a href="userfeedback.html">User Feedback</a></li>
+                <li><a href="userfeedback">User Feedback</a></li>
                 <li><a href="profile.html">Profile</a></li>
                 <li><a href="about.html">About</a></li>
             </ul>
@@ -148,22 +170,25 @@
                 <input type="text" id="professorName" placeholder="Professor Name">
                 <button type="submit" id="submit">SUBMIT</button>
             </form>
-            <table id="resultsBody">
-                <thead>
-                    <tr>
-                        <th>Course Name</th>
-                        <th>CRN</th>
-                        <th>deptcode</th>
-                        <th>Course Number</th>
-                        <th>Avg Grade</th>
-                        <th>Instructor</th>
-                        <th>Semester</th>
-                        <th>Year</th>
-                    </tr>
-                </thead>
-                <tbody id="resultsbody"></tbody>
-            </table>
         </section>
+
+        <section class="results">
+        <table id="resultsBody">
+            <thead>
+                <tr>
+                    <th>Course Name</th>
+                    <th>CRN</th>
+                    <th>Department Code</th>
+                    <th>Course Number</th>
+                    <th>Avg Grade</th>
+                    <th>Instructor</th>
+                    <th>Semester</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody id="resultsbody"></tbody>
+        </table>
+    </section>
     </main>
     <footer>
         <p>&copy; 2024 Course Investigator. All rights reserved.</p>
@@ -189,7 +214,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                const resultsBody = document.getElementById('resultsBody');
+                const resultsBody = document.getElementById('resultsbody');
                 resultsBody.innerHTML = ''; // Clear previous results
 
                 if (data.length > 0) {
