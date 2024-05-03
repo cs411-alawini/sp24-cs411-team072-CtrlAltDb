@@ -94,6 +94,30 @@ router.post('/updateReview', function(req, res) {
     });
 });
 
+router.post('/deleteAllReviews', function(req, res) {
+  const email = req.body.email;
+  // SQL Query to insert data
+  const sql = `
+    CALL DeleteUserReviews (?, 1)
+  `;
+
+    connection.query(sql, [email], function(err, results, fields){
+      if (err) {
+        // Handle any database errors
+        console.error('Failed to delete data:', err);
+        res.status(500).json({
+            message: "Failed to delete reviews",
+            error: err.message
+        });
+        return next(err);
+      }
+      res.json({
+          message: "Reviews deleted successfully",
+          data: req.body
+      });
+    });
+});
+
 module.exports = router;
 
 

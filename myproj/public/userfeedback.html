@@ -32,7 +32,7 @@
             margin-right: 20px;
         }
         nav ul li a {
-            color: white;
+            color: black;
             text-decoration: none;
             font-weight: bold;
         }
@@ -146,6 +146,7 @@
             <button type="button" id="submitReview">Submit Review</button>
             <button type="button" id="deleteReview">Delete Review</button>
             <button type="button" id="updateReview"> Update Review</button>
+            <button type="button" id="deleteAllReviews"> WARNING: DELETE ALL REVIEWS FROM EMAIL</button>
         </form>
         <!-- Response Output Area -->
         <div class="response-output" id="responseOutput"></div>
@@ -260,6 +261,37 @@
                 console.error('Error:', error);
                 document.getElementById('responseOutput').innerHTML = 'Failed to edit review.';
             });
+
+            // Clear form fields after submission
+            //document.getElementById('reviewForm').reset();
+        });
+
+        document.getElementById('deleteAllReviews').addEventListener('click', function(event) {
+            event.preventDefault();
+            const deleteAllFormData = {
+                email: document.getElementById('email').value,
+            };
+        
+            // Call your API endpoint with form data
+            fetch('/deleteAllReviews', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(deleteAllFormData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const outputDiv = document.getElementById('responseOutput');
+                outputDiv.innerHTML = '';
+                console.log('Reviews deleted', data);
+                outputDiv.innerHTML = 'Reviews deleted successfully.';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('responseOutput').innerHTML = 'Failed to delete reviews';
+            });
+
 
             // Clear form fields after submission
             //document.getElementById('reviewForm').reset();
