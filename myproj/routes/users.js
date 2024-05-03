@@ -150,6 +150,26 @@ router.get('/searchReviews', async (req, res) => {
   }
 });
 
+
+router.post('/register', function(req, res, next) {
+  const { email, password, firstName, lastName } = req.body;
+
+  // SQL Query to insert user data into the Users table
+  const sql = `
+    INSERT INTO Users (Email, Password, LastName, FirstName)
+    VALUES (?, ?, ?, ?)`
+  ;
+
+  connection.query(sql, [email, password, lastName, firstName])
+    .then(results => {
+      res.json({ message: "User signed up successfully" });
+    })
+    .catch(error => {
+      console.error('Failed to insert data:', error);
+      res.status(500).json({ message: "Failed to sign up user" });
+    });
+  });
+
 module.exports = router;
 
 
