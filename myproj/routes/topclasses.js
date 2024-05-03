@@ -36,41 +36,38 @@ var connection  = require('../database.js');
 // Route to handle the search form submission and fetch data based on user-entered CRN
 router.get('/', function(req, res, next) {
   // Extract the CRN from the query string
-  const dept = req.query.DepartmentCode;
-  const min_gpa = req.query.GPAFloor;
-  const min_rating = req.query.CourseRatingFloor;
-  const credit_hours = req.query.CreditHours;
-  const intersect_union = req.query.IntersectOrUnion === "on" ? 1 : 0;
-
-
-  // Validate that the CRN is a numeric value
-  // if (!userCRN || isNaN(userCRN)) {
-  //   return res.status(400).json({ message: 'A valid CRN is required' });
-  // }
+  //const {dept, min_gpa, min_rating, credit_hours, intersect_union_raw} = req.query;
+    const dept = req.query.deptcode;
+    const min_gpa = req.query.GPA;
+    const min_rating = req.query.CourseRating;
+    const credit_hours = req.query.CreditHours;
+    const intersect_union = req.query.Union === "true" ? 1 : 0;
+    //const intersect_union = intersect_union_raw === "on" ? 1 : 0;
+    console.log(intersect_union);
 
   // Construct the query
  const query = 'CALL UserCustomQuery(?,?,?,?,?)';
- //Alawini, Abdussalam A
- //CRN = ? and CourseName LIKE ? and 
+
   const queryParams = [
         dept, min_gpa, min_rating, credit_hours, intersect_union
     ];
 
   // Execute the query with the CRN parameter
   connection.query(query, queryParams, function(err, results) {
+    //console.log(results);
     if (err) {
-      // Handle any database errors
-      return next(err);
-    }
+        // Handle any database errors
+        console.error('Failed to do custom query:', err);
+        res.status(500).json({
+            message: "Failed to do custom query",
+            error: err.message
+        });
+        return next(err);
+      }
     // Send the results back to the client
-    if (results.length > 0) {
-      res.render('list_topclasses',{page_title:"Top Classes",data:results[0]});
-      //res.json(results);
-    } else {
-      // If no results found, send an appropriate response
-      res.status(404).json({ message: 'No records found for the provided CRN' });
-    }
+    res.json(results);
   });
+
 });
 
 module.exports = router;
