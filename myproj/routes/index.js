@@ -5,12 +5,13 @@ var connection  = require('../database.js');
 // Route to handle the search form submission and fetch data based on user-entered CRN
 router.get('/search', function(req, res, next) {
   // Extract the CRN from the query string
-  const { courseNumber, deptcode, courseTitle, professorName } = req.query;
+  const { crn, deptcode, courseTitle, professorName, courseNum } = req.query;
 
-  console.log(courseNumber);
+  console.log(crn);
   console.log(deptcode);
   console.log(courseTitle);
   console.log(professorName);
+  console.log(courseNum);
   console.log(req.query);
 
   // Construct the query
@@ -20,14 +21,16 @@ router.get('/search', function(req, res, next) {
   WHERE (CRN = ? OR ? = '') AND
         (DepartmentCode LIKE ? OR ? ='') AND
         (CourseName LIKE ? OR ? = '') AND
-        (Instructor LIKE ? OR ? = '')
+        (Instructor LIKE ? OR ? = '') AND
+        (CourseNum LIKE ? OR ? = '')
 `; 
 
 const queryParams = [
-  courseNumber, courseNumber,
+  crn, crn,
   `%${deptcode}%`, deptcode,
   `%${courseTitle}%`, courseTitle,
-  `%${professorName}%`, professorName
+  `%${professorName}%`, professorName,
+  `%${courseNum}%`, courseNum
 ];
 
 
