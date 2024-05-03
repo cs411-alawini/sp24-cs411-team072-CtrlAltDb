@@ -119,7 +119,10 @@ router.post('/deleteAllReviews', function(req, res) {
 });
 
 router.get('/searchReviews', async (req, res) => {
-  const { departmentCode, courseNum } = req.query;
+  const { courseNum, departmentCode} = req.query;
+
+  console.log(courseNum);
+  console.log(departmentCode);
 
   const query = `
       SELECT u.FeedbackId, u.Testimony, u.Rating, u.Difficulty, g.CourseName, g.DepartmentCode, g.CourseNum
