@@ -118,6 +118,35 @@ router.post('/deleteAllReviews', function(req, res) {
     });
 });
 
+router.get('/searchReviews', async (req, res) => {
+  const { departmentCode, courseNum } = req.query;
+
+  const query = `
+      SELECT u.FeedbackId, u.Testimony, u.Rating, u.Difficulty, g.CourseName, g.DepartmentCode, g.CourseNum
+      FROM UserFeedback u
+      JOIN SectionAttributes s ON u.CRN = s.CRN AND u.Year = s.Year AND u.Semester = s.Semester
+      JOIN GeneralCourse g ON s.CourseNum = g.CourseNum AND s.DepartmentCode = g.DepartmentCode
+      WHERE g.DepartmentCode = ? AND (g.CourseNum LIKE ? OR ? = '')`
+  ;
+
+  const queryParams = [
+    departmentCode,
+    `%${courseNum}%`, courseNum
+  ];
+
+  try {
+      const [results] = await connection.promise().query(query, queryParams);
+      if (results.length > 0) {
+          res.json(results);
+      } else {
+          res.status(404).json({ message: "No reviews found for the given course and department." });
+      }
+  } catch (error) {
+      console.error('Error searching for feedback:', error);
+      res.status(500).json({ message: "Error searching for feedback", error: error.message });
+  }
+});
+
 module.exports = router;
 
 

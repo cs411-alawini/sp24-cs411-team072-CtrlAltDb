@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Course Feedback - Course Investigator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f9f9f9;
+        }
+        header, footer {
+            background-color: #13294b; 
+            color: white;
+            padding: 1em;
+            text-align: center;
+        }
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        form {
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: none; /* Removing focus box-shadow for consistency */
+        }
+        button {
+            background-color: #e84a27; /* Orange color from the logo */
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c73f1d;
+        }
+        .results {
+            width: 90%;
+            max-width: 600px;
+            background: #fff;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Course Investigator</h1>
+    </header>
+    <div class="content">
+        <h2>Search Course Feedback</h2>
+        <form id="searchForm" action="/searchReviews" method="GET">
+            <input type="text" id="departmentCode" name="departmentCode" placeholder="Department Code" required>
+            <input type="text" id="courseNum" name="courseNum" placeholder="Course Number">
+            <input type="submit" value="SUBMIT">
+        </form>
+        <div class="results" id="results"></div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Course Investigator. All rights reserved.</p>
+    </footer>
+</body>
+</html>

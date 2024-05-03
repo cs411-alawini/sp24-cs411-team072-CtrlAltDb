@@ -52,6 +52,11 @@ app.get('/topclasses', (req, res) => {
   res.sendFile(path.join(__dirname, 'public','topclasses.html'));
 });
 
+app.get('/coursereviews', (req, res) => {
+  // Send the HTML file as the response
+  res.sendFile(path.join(__dirname, 'public','coursereviews.html'));
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
