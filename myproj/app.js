@@ -36,7 +36,7 @@ app.use(session({
 app.use(flash());
 
 app.use('/', indexRouter);
-app.use('/list', usersRouter);
+app.use('/submitReview', usersRouter);
 app.get('/helloworld', (req, res) => {
   // Send the HTML file as the response
   res.sendFile(path.join(__dirname, "public",'helloworld.html'));
